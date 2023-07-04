@@ -37,9 +37,9 @@ For users who wish to train `ShinyAnimalCV` with their own data, [the second sec
 ## Section 1: Video demo for online usage of ShinyAnimalCV<a name="section-1"></a>
 We provide two video demos below to showcase the usage of two modules of [ShinyAnimalCV](https://shinyanimalcv.rc.ufl.edu/) online: object detection and segmentation, as well as 3D morphological feature extraction. Additionally, we offer [example images](https://github.com/uf-aiaos/ShinyAnimalCV/tree/main/ExampleData/Example_images_for_testing_ShinyAnimalCV) for users to explore these modules.
 
-#### 1.1 Object detection and segmentation.<a name="subsection-1-1"></a> [[Video demo](https://www.youtube.com/watch?v=7QdbRmvLO1s)]
+#### 1.1 Object detection and segmentation.<a name="subsection-1-1"></a> [[Video demo](https://www.youtube.com/watch?v=-p1UZe0xkhU)]
 
-#### 1.2 Three-dimensional morphological feature extraction and visualization.<a name="subsection-1-2"></a> [[Video demo](https://www.youtube.com/watch?v=N_it8m5IzsU)]
+#### 1.2 Three-dimensional morphological feature extraction and visualization.<a name="subsection-1-2"></a> [[Video demo](https://www.youtube.com/watch?v=mr6tl9yH4zk)]
 
 <!-- Section 2 -->
 
