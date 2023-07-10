@@ -18,12 +18,10 @@ cd labelme/
 
 # modeify the json_to_dataset.py to create .yaml file (e.g., `nano labelme/cli/json_to_dataset.py` or use other text editor, e.g., vim)
 
-## Add the following codes into json_to_dataset.py
-
-# add yaml to creat .yaml file; put this line at the beginning
+## put this line at the beginning
 import yaml
 
-# additional codes to create yaml file; add the following codes before the line `logger.info("Saved to: {}".format(out_dir))`
+## add the following codes before the line `logger.info("Saved to: {}".format(out_dir))`
 logger.warning('info.yaml is being replaced by label_names.txt')
 info = dict(label_names=label_names)
 with open(osp.join(out_dir, 'info.yaml'), 'w') as f:
