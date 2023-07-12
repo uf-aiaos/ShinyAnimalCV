@@ -761,26 +761,22 @@ def save_image(image, image_name, boxes, masks, class_ids, scores, class_names, 
     masked_image.save(os.path.join(save_dir, '%s.jpg' % (image_name)))
     
     
-# self-defined function to get cleaned depth file from original file (removing background); 05/2023; Hu Yu & Haipeng Yu
 def getcleaneddepthdf(origdepthfile, masks_2d, distCtoG = 0.0, sigma_gaussianfilter = 0.0):
-    # the code below multiple original depth file with masks returned maskrcnn (include true and false) will subset the depth file to only include animal 
+    # the code below multiple original depth file with masks returned maskrcnn (include true and false) will subset the depth file to only include animal
     segment_depthfile = origdepthfile * masks_2d
     # calculate the mean values of mask region
     mask_values     = segment_depthfile[masks_2d]
     meanmask_values = mask_values[mask_values != 0].mean().mean()
     # replace zeros in the mask region with mean values of segment_depthfile
     segment_depthfile[np.logical_and(masks_2d, segment_depthfile == 0)] = meanmask_values
-    # use the largest distance as distance from camera to ground if not provided (depends on the 3d camera, this might introduce wrong distance to ground) 
+    # use the largest distance as distance from camera to ground if not provided (depends on the 3d camera, this might introduce wrong distance to ground)
     if distCtoG == 0.0:
         distCtoG = origdepthfile.max().max()
     # use distCtoG minus the depth of mask region (distance from camera to object surface) to get the object height (to ground)
     segment_depthfile[segment_depthfile != 0] =  distCtoG - segment_depthfile[segment_depthfile != 0]
-    # replace 0 with nan
-    segment_depthfile.replace({0:np.nan}, inplace = True)
-    # apply gaussian filter to remove noise
-    segment_intpl_inv_filter_depthfile = ndimage.gaussian_filter(segment_depthfile, sigma_gaussianfilter)
-    # change back to 0
-    segment_intpl_inv_filter_depthfile = np.nan_to_num(segment_intpl_inv_filter_depthfile, nan=0)
+    # create zero array to storage filtered data (only based on non-zero values)
+    segment_intpl_inv_filter_depthfile = np.zeros_like(segment_depthfile)
+    segment_intpl_inv_filter_depthfile = np.where(segment_depthfile != 0, ndimage.gaussian_filter(segment_depthfile, sigma_gaussianfilter), segment_depthfile)
     # replace the negative values in the mask region (this means the distance from object surface to ground is negative) with 0.0
     segment_intpl_inv_filter_depthfile[segment_intpl_inv_filter_depthfile < 0] = 0.0
     return segment_intpl_inv_filter_depthfile
