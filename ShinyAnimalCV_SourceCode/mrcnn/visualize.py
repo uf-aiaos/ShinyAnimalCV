@@ -274,7 +274,7 @@ def display_instances_md(image, boxes, rangle, masks, class_ids, class_names,
         plt.show()
         
 
-
+# sel-defined function to save the detected image with rotated and minArea rectangle; 10/2022; Jin Wang & Haipeng Yu
 def save_instances(image, boxes, rangle, masks, class_ids, class_names,
                       scores=None, title="",
                       show_mask=True, show_bbox=True,
@@ -323,7 +323,7 @@ def save_instances(image, boxes, rangle, masks, class_ids, class_names,
         else:
             caption = captions[i]
         A, B, C, D = boxes[i]
-        cv2.putText(masked_image, caption, (B[0], B[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255,255,255), 2, lineType= cv2.LINE_AA)
+        cv2.putText(masked_image, caption, (B[0] - 15, B[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 2, lineType= cv2.LINE_AA)
 
         # Mask
         mask = masks[:, :, i]
@@ -332,79 +332,6 @@ def save_instances(image, boxes, rangle, masks, class_ids, class_names,
             
     return masked_image.astype(np.uint8)
    
-# def save_instances(image, boxes, rangle, masks, class_ids, class_names,
-#                       scores=None, title="",
-#                       figsize=(16, 16), ax=None,
-#                       show_mask=True, show_bbox=True,
-#                       colors=None, captions=None):
-#     """
-#     boxes: list of minAreaRect (four points coordinates) in image coordinates.
-#     rangle: rotated angle of minAreaRect bbox (third output from minAreaRect).
-#     masks: [height, width, num_instances]
-#     class_ids: [num_instances]
-#     class_names: list of class names of the dataset
-#     scores: (optional) confidence scores for each box
-#     title: (optional) Figure title
-#     show_mask, show_bbox: To show masks and bounding boxes or not
-#     figsize: (optional) the size of the image
-#     colors: (optional) An array or colors to use with each object
-#     captions: (optional) A list of strings to use as captions for each object
-#     """
-#     # Number of instances
-#     N = boxes.shape[0]
-#     if not N:
-#         print("\n*** No instances to display *** \n")
-#     else:
-#         assert boxes.shape[0] == masks.shape[-1] == class_ids.shape[0]
-#
-#     # If no axis is passed, create one and automatically call show()
-#     auto_show = False
-#     if not ax:
-#         _, ax = plt.subplots(1, figsize=figsize)
-#         # auto_show = True
-#
-#     # Generate random colors
-#     colors = colors or random_colors(N)
-#
-#     # Show area outside image boundaries.
-#     height, width = image.shape[:2]
-#     ax.set_ylim(height + 10, -10)
-#     ax.set_xlim(-10, width + 10)
-#     ax.axis('off')
-#     ax.set_title(title)
-#
-#     masked_image = image.astype(np.float32).copy()
-#     for i in range(N):
-#         color = colors[i]
-#         rgbcolor = [x * 255 for x in color]
-#
-#         # Bounding box
-#         if not np.any(boxes[i]):
-#             # Skip this instance. Has no bbox. Likely lost in image cropping.
-#             continue
-#         # Draw the bounding box on the image
-#         cv2.drawContours(masked_image, [boxes[i]], 0, rgbcolor, 2)
-#
-#         # Label
-#         if not captions:
-#             class_id = class_ids[i]
-#             score = scores[i] if scores is not None else None
-#             label = class_names[class_id] + str(i+1)
-#             caption = "{} {:.3f}".format(label, score) if score else label
-#         else:
-#             caption = captions[i]
-#         A, B, C, D = boxes[i]
-#         cv2.putText(masked_image, caption, (B[0], B[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255,255,255), 1, lineType= cv2.LINE_AA)
-#
-#         # Mask
-#         mask = masks[:, :, i]
-#         if show_mask:
-#             masked_image = apply_mask(masked_image, mask, color)
-#
-#     return masked_image.astype(np.uint8)
-
-
-
 def display_differences(image,
                         gt_box, gt_class_id, gt_mask,
                         pred_box, pred_class_id, pred_score, pred_mask,
@@ -834,7 +761,7 @@ def save_image(image, image_name, boxes, masks, class_ids, scores, class_names, 
     masked_image.save(os.path.join(save_dir, '%s.jpg' % (image_name)))
     
     
-# self-defined function to get cleaned depth file from original file (removing background); 05/2023; Hu Yu & Haipeng Yu    
+# self-defined function to get cleaned depth file from original file (removing background); 05/2023; Hu Yu & Haipeng Yu
 def getcleaneddepthdf(origdepthfile, masks_2d, distCtoG = 0.0, sigma_gaussianfilter = 0.0):
     # the code below multiple original depth file with masks returned maskrcnn (include true and false) will subset the depth file to only include animal 
     segment_depthfile = origdepthfile * masks_2d
@@ -848,17 +775,14 @@ def getcleaneddepthdf(origdepthfile, masks_2d, distCtoG = 0.0, sigma_gaussianfil
         distCtoG = origdepthfile.max().max()
     # use distCtoG minus the depth of mask region (distance from camera to object surface) to get the object height (to ground)
     segment_depthfile[segment_depthfile != 0] =  distCtoG - segment_depthfile[segment_depthfile != 0]
-    # replace the negative values in the mask region (this means the distance from object surface to ground is negative) with 0.0
-    # segment_depthfile[segment_depthfile < 0] = 0.0
-    segment_intpl_inv_filter_depthfile[segment_intpl_inv_filter_depthfile < 0] = 0.0
     # replace 0 with nan
     segment_depthfile.replace({0:np.nan}, inplace = True)
-    # apply gaussian filter to remove noises
+    # apply gaussian filter to remove noise
     segment_intpl_inv_filter_depthfile = ndimage.gaussian_filter(segment_depthfile, sigma_gaussianfilter)
     # change back to 0
     segment_intpl_inv_filter_depthfile = np.nan_to_num(segment_intpl_inv_filter_depthfile, nan=0)
-    # apply gaussian filter to remove noises
-    # segment_intpl_inv_filter_depthfile = ndimage.gaussian_filter(segment_depthfile, sigma_gaussianfilter)
+    # replace the negative values in the mask region (this means the distance from object surface to ground is negative) with 0.0
+    segment_intpl_inv_filter_depthfile[segment_intpl_inv_filter_depthfile < 0] = 0.0
     return segment_intpl_inv_filter_depthfile
 
 
@@ -869,13 +793,6 @@ def morphologicalfeatures(masks, class_ids, class_names, ppm = 1, depthdf = None
     rangle = []
     nmask  = masks.shape[2]
     for i in range(nmask):
-        # ci        = np.argwhere(masks[:, :, i])
-#         maski     = np.zeros(masks.shape[0:2], dtype = np.uint8)
-#         # Here, -1 fills the inside of the contour.
-#         fill_imgi = cv2.drawContours(maski, [np.flip(ci, axis = 1)], 0, (255), 0)
-        # # get contour coordinates
-#         cnti, _   = cv2.findContours(fill_imgi, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-        # We replaced the above 3 lines with the two new lines below. (05/2023)
         # get ith mask 
         maski     = masks[:, :, i]
         # get contour coordinates 
@@ -896,8 +813,6 @@ def morphologicalfeatures(masks, class_ids, class_names, ppm = 1, depthdf = None
         topleft_rowi    = B[1]
         bottomright_coli= D[0]
         bottomright_rowi= D[1]
-        # objlengthi      = dist.euclidean(A, B) / ppm
-        # objwidthi       = dist.euclidean(B, C) / ppm
         objlengthi   = max(minAreaRecti[1][0], minAreaRecti[1][1]) / ppm
         objwidthi    = min(minAreaRecti[1][0], minAreaRecti[1][1]) / ppm
         # get ROI ID
@@ -905,9 +820,6 @@ def morphologicalfeatures(masks, class_ids, class_names, ppm = 1, depthdf = None
         labeli          = class_names[class_idi] + str(i + 1)
         # add depth mfeatures if depthdf is provided
         if depthdf is not None:
-            # height_avgi      = depthdf.height.mean()
-#             height_centroidi = depthdf[(depthdf.row == row_centroidi) & (depthdf.col == col_centroidi)].height.item()
-#             volumei          = depthdf.height.sum()
             # here new depthdf (origdf * mask) was applied; 05/2023
             height_avgi      = depthdf[depthdf != 0.0].mean().mean()
             height_centroidi = depthdf[row_centroidi, col_centroidi]
@@ -919,133 +831,9 @@ def morphologicalfeatures(masks, class_ids, class_names, ppm = 1, depthdf = None
         minbox.append(minAreaRectboxi)
         rangle.append(ranglei)
     if depthdf is not None:
-        colnames = ["ROI_ID", "Length", "Width", "Height_average", "Height_centroid","Area", "Volume", "Centroid_x", "Centroid_y", "bbox_topleft_x", "bbox_topleft_y", "bbox_bottomright_x", "bbox_bottomright_y"]
+        colnames = ["ROI_ID", "Dorsal_length", "Abdomen_width", "Height_average", "Height_centroid","Area", "Volume", "Centroid_x", "Centroid_y", "bbox_topleft_x", "bbox_topleft_y", "bbox_bottomright_x", "bbox_bottomright_y"]
     else: 
-        colnames = ["ROI_ID", "Length", "Width", "Area", "Centroid_x", "Centroid_y", "bbox_topleft_x", "bbox_topleft_y", "bbox_bottomright_x", "bbox_bottomright_y"]
+        colnames = ["ROI_ID", "Dorsal_length", "Abdomen_width", "Area", "Centroid_x", "Centroid_y", "bbox_topleft_x", "bbox_topleft_y", "bbox_bottomright_x", "bbox_bottomright_y"]
     # output   = pd.DataFrame(mfdf, columns = colnames)
     return{'morpholdf': pd.DataFrame(mfdf, columns = colnames), 'minbox': np.int32(minbox), 'rangle': rangle}
     
-# def morphologicalfeatures(masks, class_ids, class_names, depthdf = None):
-#     mfdf   = []
-#     minbox = []
-#     rangle = []
-#     nmask  = masks.shape[2]
-#     for i in range(nmask):
-#         ci        = np.argwhere(masks[:, :, i])
-#         maski     = np.zeros(masks.shape[0:2], dtype = np.uint8)
-#         # Here, -1 fills the inside of the contour.
-#         fill_imgi = cv2.drawContours(maski, [np.flip(ci, axis = 1)], 0, (255), 0)
-#         #fill_imgi = fill_imgi.astype(np.uint8)
-#         # get contour coordinates
-#         cnti, _   = cv2.findContours(fill_imgi, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-#         # find the moment of contour
-#         Mi        = cv2.moments(cnti[0])
-#         # area of segmented object
-#         objareai       = Mi['m00']
-#         # centroid coordinate ()
-#         row_centroidi  = int(Mi["m01"] / Mi["m00"])
-#         col_centroidi  = int(Mi["m10"] / Mi["m00"])
-#         # find the rotated minAreaRect
-#         minAreaRecti    = cv2.minAreaRect(cnti[0]) # two points + rotated angle
-#         minAreaRectboxi = np.int0(cv2.boxPoints(minAreaRecti))
-#         A, B, C, D      = minAreaRectboxi
-#         topleft_coli    = B[0]s
-#         topleft_rowi    = B[1]
-#         bottomright_coli= D[0]
-#         bottomright_rowi= D[1]
-#         objlengthi      = dist.euclidean(A, B)
-#         objwidthi       = dist.euclidean(B, C)
-#         # get ROI ID
-#         class_idi       = class_ids[i]
-#         labeli          = class_names[class_idi] + str(i + 1)
-#         # add depth mfeatures if depthdf is provided
-#         if depthdf is not None:
-#             height_avgi      = depthdf.height.mean()
-#             height_centroidi = depthdf[(depthdf.row == row_centroidi) & (depthdf.col == col_centroidi)].height.item()
-#             volumni          = depthdf.height.sum()
-#             mfi              = labeli, objlengthi, objwidthi, height_avgi, height_centroidi, objareai, volumni, col_centroidi, row_centroidi, topleft_coli, topleft_rowi, bottomright_coli, bottomright_rowi
-#         else:
-#             mfi             = labeli, objlengthi, objwidthi, objareai, col_centroidi, row_centroidi, topleft_coli, topleft_rowi, bottomright_coli, bottomright_rowi
-#         mfdf.append(mfi)
-#     if depthdf is not None:
-#         colnames = ["ROI_ID", "Length", "Width", "Height_average", "Height_centroid","Area", "Volumn", "Centroid_x", "Centroid_y", "bbox_topleft_x", "bbox_topleft_y", "bbox_bottomright_x", "bbox_bottomright_y"]
-#     else:
-#         colnames = ["ROI_ID", "Length", "Width", "Area", "Centroid_x", "Centroid_y", "bbox_topleft_x", "bbox_topleft_y", "bbox_bottomright_x", "bbox_bottomright_y"]
-#     output   = pd.DataFrame(mfdf, columns = colnames)
-#     return(output)
-    
-# def morphologicalfeatures(masks, class_ids, class_names):
-#     mfdf  = []
-#     nmask = masks.shape[2]
-#     for i in range(nmask):
-#         ci        = np.argwhere(masks[:, :, i])
-#         maski     = np.zeros(masks.shape[0:2], dtype = np.uint8)
-#         # Here, -1 fills the inside of the contour.
-#         fill_imgi = cv2.drawContours(maski, [np.flip(ci, axis = 1)], 0, (255), 0)
-#         fill_imgi = fill_imgi.astype(np.uint8)
-#         # get contour coordinates
-#         cnti, _   = cv2.findContours(fill_imgi, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-#         # find the moment of contour
-#         Mi        = cv2.moments(cnti[0])
-#         # area of segmented object
-#         objareai       = Mi['m00']
-#         # centroid coordinate ()
-#         row_centroidi  = int(Mi["m01"] / Mi["m00"])
-#         col_centroidi  = int(Mi["m10"] / Mi["m00"])
-#         # find the rotated minAreaRect
-#         minAreaRecti    = cv2.minAreaRect(cnti[0]) # two points + rotated angle
-#         minAreaRectboxi = np.int0(cv2.boxPoints(minAreaRecti))
-#         A, B, C, D      = minAreaRectboxi
-#         topleft_coli    = B[0]
-#         topleft_rowi    = B[1]
-#         bottomright_coli= D[0]
-#         bottomright_rowi= D[1]
-#         objlengthi      = dist.euclidean(A, B)
-#         objwidthi       = dist.euclidean(B, C)
-#         # get ROI ID
-#         class_idi       = class_ids[i]
-#         labeli          = class_names[class_idi] + str(i + 1)
-#         mfi             = labeli, objlengthi, objwidthi, objareai, col_centroidi, row_centroidi, topleft_coli, topleft_rowi, bottomright_coli, bottomright_rowi
-#         mfdf.append(mfi)
-#
-#     colnames = ["ROI_ID", "Length", "Width", "Area", "Centroid_x", "Centroid_y", "bbox_topleft_x", "bbox_topleft_y", "bbox_bottomright_x", "bbox_bottomright_y"]
-#     output   = pd.DataFrame(mfdf, columns = colnames)
-#     return(output)
-#
-# def morphologicalfeatures(image, masks, class_ids, class_names):
-#     mfdf  = []
-#     nmask = masks.shape[2]
-#     for i in range(nmask):
-#         ci        = np.argwhere(masks[:, :, i])
-#         maski     = np.zeros(masks.shape[0:2], dtype = image.dtype)
-#         # Here, -1 fills the inside of the contour.
-#         fill_imgi = cv2.drawContours(maski, [np.flip(ci, axis = 1)], 0, (255), 0)
-#         fill_imgi = fill_imgi.astype(np.uint8)
-#         # get contour coordinates
-#         cnti, _   = cv2.findContours(fill_imgi, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-#         # find the moment of contour
-#         Mi        = cv2.moments(cnti[0])
-#         # area of segmented object
-#         objareai       = Mi['m00']
-#         # centroid coordinate ()
-#         row_centroidi  = int(Mi["m01"] / Mi["m00"])
-#         col_centroidi  = int(Mi["m10"] / Mi["m00"])
-#         # find the rotated minAreaRect
-#         minAreaRecti    = cv2.minAreaRect(cnti[0]) # two points + rotated angle
-#         minAreaRectboxi = np.int0(cv2.boxPoints(minAreaRecti))
-#         A, B, C, D      = minAreaRectboxi
-#         topleft_coli    = B[0]
-#         topleft_rowi    = B[1]
-#         bottomright_coli= D[0]
-#         bottomright_rowi= D[1]
-#         objlengthi      = dist.euclidean(A, B)
-#         objwidthi       = dist.euclidean(B, C)
-#         # get ROI ID
-#         class_idi       = class_ids[i]
-#         labeli          = class_names[class_idi] + str(i + 1)
-#         mfi             = labeli, objlengthi, objwidthi, objareai, col_centroidi, row_centroidi, topleft_coli, topleft_rowi, bottomright_coli, bottomright_rowi
-#         mfdf.append(mfi)
-#
-#     colnames = ["ROI_ID", "Length", "Width", "Area", "Centroid_x", "Centroid_y", "bbox_topleft_x", "bbox_topleft_y", "bbox_bottomright_x", "bbox_bottomright_y"]
-#     output   = pd.DataFrame(mfdf, columns = colnames)
-#     return(output)
