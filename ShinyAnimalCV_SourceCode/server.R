@@ -18,7 +18,7 @@ library(shiny)
 library(countcolors)
 
 # set up reticulate env (for my mac studio)
-reticulate::use_condaenv(condaenv="env_tf",conda="auto", required=TRUE)
+reticulate::use_condaenv(condaenv="maskrcnn",conda="auto", required=TRUE)
 
 # Import python functions to R
 source("pyfunc.R") 
