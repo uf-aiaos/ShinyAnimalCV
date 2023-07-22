@@ -827,9 +827,9 @@ def morphologicalfeatures(masks, class_ids, class_names, ppm = 1, depthdf = None
         minbox.append(minAreaRectboxi)
         rangle.append(ranglei)
     if depthdf is not None:
-        colnames = ["ROI_ID", "Dorsal_length", "Abdomen_width", "Height_average", "Height_centroid","Area", "Volume", "Centroid_x", "Centroid_y", "bbox_topleft_x", "bbox_topleft_y", "bbox_bottomright_x", "bbox_bottomright_y"]
+        colnames = ["ROI_ID", "Dorsal_length", "Abdominal_width", "Height_average", "Height_centroid","Area", "Volume", "Centroid_x", "Centroid_y", "bbox_topleft_x", "bbox_topleft_y", "bbox_bottomright_x", "bbox_bottomright_y"]
     else: 
-        colnames = ["ROI_ID", "Dorsal_length", "Abdomen_width", "Area", "Centroid_x", "Centroid_y", "bbox_topleft_x", "bbox_topleft_y", "bbox_bottomright_x", "bbox_bottomright_y"]
+        colnames = ["ROI_ID", "Dorsal_length", "Abdominal_width", "Area", "Centroid_x", "Centroid_y", "bbox_topleft_x", "bbox_topleft_y", "bbox_bottomright_x", "bbox_bottomright_y"]
     # output   = pd.DataFrame(mfdf, columns = colnames)
     return{'morpholdf': pd.DataFrame(mfdf, columns = colnames), 'minbox': np.int32(minbox), 'rangle': rangle}
     
