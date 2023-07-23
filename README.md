@@ -97,7 +97,7 @@ labelme --version
 
 #### 2.1.7 Label images using the standalone executable Labelme 
 
-<img src='https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/ExampleData/Images_for_demonstration/twopig_clean.gif?raw=true' width='100%' height='100%'>
+<img src='https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/ExampleData/Images_for_demonstration/twopigs_clean.gif?raw=true' width='100%' height='100%'>
 
 More details about how to label images can be found on [Labelme GitHub Repo](https://github.com/wkentaro/labelme).
 
@@ -107,7 +107,7 @@ labelme_json_to_dataset image_name.json -o image_name_json
 ```
 
 The following five files will be found under the folder `image_name_json/`:
-<img src='https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/ExampleData/Images_for_demonstration/twopig_json.png?raw=true' width='100%' height='100%'>
+<img src='https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/ExampleData/Images_for_demonstration/twopigs_json.png?raw=true' width='100%' height='100%'>
 
 ### 2.2 Model training and evaluation<a name="section-2-2"></a>
 
