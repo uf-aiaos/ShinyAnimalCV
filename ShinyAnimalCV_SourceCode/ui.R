@@ -54,8 +54,8 @@ ui <- function(req){
             selectInput(inputId = 'objdtweights', 
                         label = 'Step 2: Select a pretrained machine learning model',
                         list("",
-                             `Pig` = list("OnePig_OriginalRGB", "OnePig_DepthRGB", "OnePig_HeatmapRGB",
-                                          "TwoPigs_OriginalRGB", "TwoPigs_DepthRGB", "TwoPigs_HeatmapRGB","FourPigs_OriginalRGB"), 
+                             `Pig` = list("OnePig_OriginalRGB", "OnePig_DepthRGB", 
+                                          "TwoPigs_OriginalRGB", "TwoPigs_DepthRGB", "FourPigs_OriginalRGB"), 
                              `DairyCattle` = list("OneCattle_OriginalRGB","OneCattle_DepthRGB", "OneCattle_HeatmapRGB"),
                              `Custom model`= list("CustomWeights") # note: this Custom model is only available for local deployment
                              )), 
