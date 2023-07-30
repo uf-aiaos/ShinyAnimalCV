@@ -134,7 +134,7 @@ jupyter notebook MaskRCNN.ipynb
 ```
 
 ## Section 3: Local inference with trained models in ShinyAnimalCV <a name="section-3"></a>
-To enable users to perform local inference using the trained model on custom data while leveraging their local computational resources, this section provides detailed instructions on how to deploy and run ShinyAnimalCV locally with custom model weights. The source code for `ShinyAnimalCV` can be accessed at [ShinyAnimalCV_SourceCode](https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/ShinyAnimalCV_SourceCode/). 
+To enable users to perform local inference using the trained model on custom data while leveraging their local computational resources, this section provides detailed instructions on how to deploy and run ShinyAnimalCV locally with custom model weights. The source code for `ShinyAnimalCV` can be accessed at [ShinyAnimalCV_SourceCode](https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/ShinyAnimalCV_SourceCode/). The nine pre-trained models included in online ShinyAnimalCV can be accessed on [Zenodo](https://zenodo.org/record/8196421).
 
 ### 3.1 Download `ShinyAnimalCV` in local 
 ```bash
