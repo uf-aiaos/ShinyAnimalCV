@@ -166,8 +166,7 @@ Once the ShinyAnimalCV application is successfully deployed, a web-based graphic
 ## References <a name="section-reference"></a>
 If you use the materials provided in this repository, we kindly ask you to cite our paper: 
 
-- The manuscript introducing ShinyAnimalCV is currently being prepared for journal submission. 
-The DOI will be provided upon its publication.
+- Jin Wang, Yu Hu, Lirong Xiang, Gota Morota, Samantha A. Brooks, Carissa L. Wickens, Emily K. Miller-Cushon and Haipeng Yu. Technical note: ShinyAnimalCV: open-source cloud-based web application for object detection, segmentation, and three-dimensional visualization of animals using computer vision. [doi: arXiv:2307.14487](https://arxiv.org/abs/2307.14487)
 
 <!-- License -->
 ## License <a name="section-license"></a>
