@@ -117,15 +117,15 @@ This section provides a step-by-step guide to training a computer vision model f
 This subsection details the process of preparing the training, validation, and testing sets for model training and evaluation. First, users need to partition the entire dataset into training, validation, and testing sets using a specified ratio, such as 7:2:1. Additionally, the `label.png` file within each `image_name_json` folder, obtained from `Labelme`, needs to be transferred to a new mask folder named `cv2_mask` and renamed as `image_name.png`. To facilitate this procedure, we have included a script called [generate_cv2_mask.ipynb](https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/MaskRCNN/generate_cv2_mask.ipynb), which can be used iteratively to prepare the `cv2_mask` folder. For more comprehensive details and explanations, please refer to the [generate_cv2_mask.ipynb](https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/MaskRCNN/generate_cv2_mask.ipynb) file. Furthermore, we have provided a [demo dataset](https://github.com/uf-aiaos/ShinyAnimalCV/tree/main/ExampleData/Example_images_for_training_and_evaluating_model), which serves as a reference for dataset preparation.
 
 #### 2.2.2 Train and evaluate Mask R-CNN model <a name="section-2-2-2"></a>
-In this subsection, we show how to train and evaluate the model with organized annotated custom data using our provided Jypyter Notebook ([MaskRCNN.ipynb](https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/MaskRCNN/Mask%20R-CNN.ipynb)). 
+In this subsection, we show how to train and evaluate the model with organized annotated custom data using our provided Jypyter Notebook ([MaskRCNN.ipynb](https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/MaskRCNN/MaskRCNN.ipynb)). 
 
-- Create a conda environment named `maskrcnn` and install all dependencies for running the [MaskRCNN.ipynb](https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/MaskRCNN/Mask%20R-CNN.ipynb). The required dependencies file of `environment.yml` can be downloaded [here](https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/MaskRCNN/environment.yml).
+- Create a conda environment named `maskrcnn` and install all dependencies for running the [MaskRCNN.ipynb](https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/MaskRCNN/MaskRCNN.ipynb). The required dependencies file of `environment.yml` can be downloaded [here](https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/MaskRCNN/environment.yml).
 ```bash
 # create a conda environment `maskrcnn` and install all dependencies using `environment.yml`
 conda env create -f environment.yml
 ```
 
-- Open the [MaskRCNN.ipynb](https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/MaskRCNN/Mask%20R-CNN.ipynb) using [Jupyter Notebook](https://jupyter.org/) and follow the detailed instructions in `MaskRCNN.ipynb` to train and evaluate the model. 
+- Open the [MaskRCNN.ipynb](https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/MaskRCNN/MaskRCNN.ipynb) using [Jupyter Notebook](https://jupyter.org/) and follow the detailed instructions in `MaskRCNN.ipynb` to train and evaluate the model. 
 ```bash
 # activate `maskrcnn` (if deactivated)
 conda activate maskrcnn
