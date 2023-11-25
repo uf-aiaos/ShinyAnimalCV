@@ -46,7 +46,7 @@ We provide two video demos below to showcase the usage of two modules of [ShinyA
 ## Section 2: Training computer vision models with custom data <a name="section-2"></a>
 
 ### 2.1 Image annotation<a name="section-2-1"></a>
-The first step in training computer vision models involves labeling or annotating objects in images. Here, we introduce [Labelme](https://github.com/wkentaro/labelme), which is an open-source graphical image annotation tool that allows users to draw  polygons, rectangles, circles, lines and points to label the objects in images. When training the models using the data annotated from `Labelme`, one of the inputs is an `info.yaml` file. However, it is important to note that the current version of `Labelme` on GitHub does not directly return a `info.yaml` file. To overcome this, the following tutorials in this section will guide you through the process of downloading `Labelme` from GitHub, making the necessary modifications to enable the generation of a `info.yaml` file, and building the modified standalone executable. For more details about building a standalone executable `Labelme`, please refer to the file [Install-StandAlone-labelme.txt](https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/Labelme/Install-StandAlone-labelme.txt) and [Labelme GitHub Repo](https://github.com/wkentaro/labelme). 
+The first step in training computer vision models involves labeling or annotating objects in images. Here, we introduce [LabelMe](https://github.com/wkentaro/labelme), which is an open-source graphical image annotation tool that allows users to draw  polygons, rectangles, circles, lines and points to label the objects in images. When training the models using the data annotated from `LabelMe`, one of the inputs is an `info.yaml` file. However, it is important to note that the current version of `LabelMe` on GitHub does not directly return a `info.yaml` file. To overcome this, the following tutorials in this section will guide you through the process of downloading `LabelMe` from GitHub, making the necessary modifications to enable the generation of a `info.yaml` file, and building the modified standalone executable. For more details about building a standalone executable `LabelMe`, please refer to the file [Install-StandAlone-labelme.txt](https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/Labelme/Install-StandAlone-labelme.txt) and [LabelMe GitHub Repo](https://github.com/wkentaro/labelme). 
 
 #### 2.1.1 Create a [conda environment](https://conda.io/projects/conda/en/latest/user-guide/install/index.html) with Python installed 
 ```bash
@@ -62,9 +62,9 @@ conda install pyqt
 conda install -c conda-forge pyside2
 ```
 
-#### 2.1.3 Download Labelme from GibHub to local using [git](https://github.com/git-guides/install-git)
+#### 2.1.3 Download LabelMe from GibHub to local using [git](https://github.com/git-guides/install-git)
 ```bash
-# download the Labelme from GitHub to local
+# download the LabelMe from GitHub to local
 git clone https://github.com/wkentaro/labelme.git
 # change directory to the downloaed labelme/ folder 
 cd labelme/
@@ -83,23 +83,23 @@ with open(osp.join(out_dir, 'info.yaml'), 'w') as f:
 	yaml.safe_dump(info, f, default_flow_style=False)
 ``` 
 
-#### 2.1.5 Build the standalone executable Labelme
+#### 2.1.5 Build the standalone executable LabelMe
 ```bash
 pip install .                 
 pip install pyinstaller
 pyinstaller labelme.spec
 ``` 
 
-####  2.1.6 Check the installed Labelme version
+####  2.1.6 Check the installed LabelMe version
 ```bash
 labelme --version
 ```
 
-#### 2.1.7 Label images using the standalone executable Labelme 
+#### 2.1.7 Label images using the standalone executable LabelMe 
 
 <img src='https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/ExampleData/Images_for_demonstration/twopigs_clean.gif?raw=true' width='100%' height='100%'>
 
-More details about how to label images can be found on [Labelme GitHub Repo](https://github.com/wkentaro/labelme).
+More details about how to label images can be found on [LabelMe GitHub Repo](https://github.com/wkentaro/labelme).
 
 #### 2.1.8 Covert the `.json` file returned from the previous step to dataset
 ```bash
@@ -114,7 +114,7 @@ The following five files will be found under the folder `image_name_json/`:
 This section provides a step-by-step guide to training a computer vision model for object detection and instance segmentation using a modified state-of-the-art computer vision package, [Mask R-CNN](https://github.com/matterport/Mask_RCNN). Specifically, we have made modifications to the original `Mask R-CNN` to ensure compatibility with tensorflow (version 2.9.0 and 2.10.0), as the current GitHub version only supports tensorflow version <= 2.5.0. Additionally, we have replaced the original axis-aligned rectangle bounding box from `Mask R-CNN` with a minimum rotated rectangle bounding box using [OpenCV](https://opencv.org/). This enhancement allows for the extraction of more precise morphological features. The modified `Mask R-CNN` is available under [`mrcnn/`](https://github.com/uf-aiaos/ShinyAnimalCV/tree/main/ShinyAnimalCV_SourceCode/mrcnn). 
 
 #### 2.2.1 Dataset preparation
-This subsection details the process of preparing the training, validation, and testing sets for model training and evaluation. First, users need to partition the entire dataset into training, validation, and testing sets using a specified ratio, such as 7:2:1. Additionally, the `label.png` file within each `image_name_json` folder, obtained from `Labelme`, needs to be transferred to a new mask folder named `cv2_mask` and renamed as `image_name.png`. To facilitate this procedure, we have included a script called [generate_cv2_mask.ipynb](https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/MaskRCNN/generate_cv2_mask.ipynb), which can be used iteratively to prepare the `cv2_mask` folder. For more comprehensive details and explanations, please refer to the [generate_cv2_mask.ipynb](https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/MaskRCNN/generate_cv2_mask.ipynb) file. Furthermore, we have provided a [demo dataset](https://github.com/uf-aiaos/ShinyAnimalCV/tree/main/ExampleData/Example_images_for_training_and_evaluating_model), which serves as a reference for dataset preparation.
+This subsection details the process of preparing the training, validation, and testing sets for model training and evaluation. First, users need to partition the entire dataset into training, validation, and testing sets using a specified ratio, such as 7:2:1. Additionally, the `label.png` file within each `image_name_json` folder, obtained from `LabelMe`, needs to be transferred to a new mask folder named `cv2_mask` and renamed as `image_name.png`. To facilitate this procedure, we have included a script called [generate_cv2_mask.ipynb](https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/MaskRCNN/generate_cv2_mask.ipynb), which can be used iteratively to prepare the `cv2_mask` folder. For more comprehensive details and explanations, please refer to the [generate_cv2_mask.ipynb](https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/MaskRCNN/generate_cv2_mask.ipynb) file. Furthermore, we have provided a [demo dataset](https://github.com/uf-aiaos/ShinyAnimalCV/tree/main/ExampleData/Example_images_for_training_and_evaluating_model), which serves as a reference for dataset preparation.
 
 #### 2.2.2 Train and evaluate Mask R-CNN model <a name="section-2-2-2"></a>
 In this subsection, we show how to train and evaluate the model with organized annotated custom data using our provided Jypyter Notebook ([MaskRCNN.ipynb](https://github.com/uf-aiaos/ShinyAnimalCV/blob/main/MaskRCNN/MaskRCNN.ipynb)). 
