@@ -3,7 +3,7 @@
 
 
 <p align="center">
-An open-source, cloud-based computer vision web application for object detection and segmentation, three-dimensional visualization, as well as 2D and 3D morphological feature extraction.
+Open-source cloud-based web application for object detection, segmentation, and three-dimensional visualization of animals using computer vision
 </p>
   
 <!-- TABLE OF CONTENTS -->
