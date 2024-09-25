@@ -39,7 +39,7 @@ We provide two video demos below to showcase the usage of two modules of [ShinyA
 
 #### 1.1 Object detection and segmentation.<a name="subsection-1-1"></a> [[Video demo](https://youtu.be/FtR0YC9jCz0)]
 
-#### 1.2 Three-dimensional morphological feature extraction and visualization.<a name="subsection-1-2"></a> [[Video demo](https://www.youtube.com/watch?v=to0mUlxuGgM)]
+#### 1.2 Three-dimensional morphological feature extraction and visualization.<a name="subsection-1-2"></a> [[Video demo](https://youtu.be/M6kmPiyYlPk)]
 
 <!-- Section 2 -->
 
